@@ -1,0 +1,30 @@
+# Deploy stack for an OpenBao estate. The GUI is a static SPA served by
+# nginx and fronted by the existing Traefik (step-ca TLS) on the shared lab_net.
+# It is a pure client of the OpenBao HTTP API (BAO_ADDR) and holds no secrets, so
+# there is no OpenBao agent sidecar. The built-in OpenBao UI at /ui is untouched,
+# which is the rollback path (see deploy/ROLLOUT.md).
+services:
+  openbao-gui:
+    build: .
+    image: openbao-gui:latest
+    container_name: openbao-gui
+    hostname: openbao-gui
+    restart: unless-stopped
+    environment:
+      # Public address of the OpenBao API this GUI talks to.
+      - BAO_ADDR=https://openbao.example
+      - OIDC_MOUNT=oidc
+      - OIDC_ROLE=operator
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openbao-gui.rule=Host(`bao.example`)"
+      - "traefik.http.routers.openbao-gui.entrypoints=websecure"
+      - "traefik.http.routers.openbao-gui.tls=true"
+      - "traefik.http.routers.openbao-gui.tls.certresolver=stepca"
+      - "traefik.http.services.openbao-gui.loadbalancer.server.port=80"
+    networks:
+      - lab_net
+
+networks:
+  lab_net:
+    external: true

@@ -1,0 +1,29 @@
+{
+  "name": "openbao-gui",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Modern React/TypeScript web GUI for OpenBao (feature parity incl. OIDC SSO)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.59.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.20"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0"
+  }
+}
